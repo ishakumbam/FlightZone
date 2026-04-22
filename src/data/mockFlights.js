@@ -1,0 +1,14 @@
+const mockFlights = [
+  { flightId: 'AA1001', origin: 'DFW', dest: 'LAX', originLat: 32.8998, originLng: -97.0403, destLat: 33.9425, destLng: -118.4081, status: 'ontime',    weather: 'Clear',  route: 'DFW → LAX', fuel_pred: 18200 },
+  { flightId: 'AA2045', origin: 'JFK', dest: 'MIA', originLat: 40.6413, originLng: -73.7781, destLat: 25.7959, destLng: -80.2870,  status: 'delayed',   weather: 'Stormy', route: 'JFK → MIA', fuel_pred: 14800 },
+  { flightId: 'AA3312', origin: 'ORD', dest: 'DFW', originLat: 41.9742, originLng: -87.9073, destLat: 32.8998, destLng: -97.0403,  status: 'ontime',    weather: 'Clear',  route: 'ORD → DFW', fuel_pred: 16100 },
+  { flightId: 'AA4418', origin: 'LAX', dest: 'SFO', originLat: 33.9425, originLng: -118.4081, destLat: 37.6213, destLng: -122.3790, status: 'ontime',   weather: 'Clear',  route: 'LAX → SFO', fuel_pred: 7400  },
+  { flightId: 'AA5523', origin: 'MIA', dest: 'ATL', originLat: 25.7959, originLng: -80.2870,  destLat: 33.6407, destLng: -84.4277,  status: 'cancelled', weather: 'Stormy', route: 'MIA → ATL', fuel_pred: 9800  },
+  { flightId: 'AA6671', origin: 'SEA', dest: 'DEN', originLat: 47.4502, originLng: -122.3088, destLat: 39.8561, destLng: -104.6737, status: 'ontime',    weather: 'Foggy',  route: 'SEA → DEN', fuel_pred: 17300 },
+  { flightId: 'AA7789', origin: 'BOS', dest: 'IAD', originLat: 42.3656, originLng: -71.0096,  destLat: 38.9531, destLng: -77.4565,  status: 'delayed',   weather: 'Foggy',  route: 'BOS → IAD', fuel_pred: 11200 },
+  { flightId: 'AA8834', origin: 'PHX', dest: 'LAS', originLat: 33.4373, originLng: -112.0078, destLat: 36.0840, destLng: -115.1537, status: 'ontime',    weather: 'Clear',  route: 'PHX → LAS', fuel_pred: 6900  },
+  { flightId: 'AA9902', origin: 'DTW', dest: 'CLT', originLat: 42.2124, originLng: -83.3534,  destLat: 35.2140, destLng: -80.9431,  status: 'ontime',    weather: 'Clear',  route: 'DTW → CLT', fuel_pred: 13500 },
+  { flightId: 'AA1156', origin: 'SFO', dest: 'PDX', originLat: 37.6213, originLng: -122.3790, destLat: 45.5898, destLng: -122.5951, status: 'delayed',   weather: 'Stormy', route: 'SFO → PDX', fuel_pred: 8600  },
+];
+
+export default mockFlights;

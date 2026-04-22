@@ -8,6 +8,14 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { api } from '../api';
 
+const USE_MOCK = true;
+
+const MOCK_USERS = {
+  EMP001: { password: 'Admin@1234',    user: { id: 1, name: 'Nataly Castillo',  role: 'admin'      } },
+  EMP002: { password: 'Dispatch@1234', user: { id: 2, name: 'Isha Kumbam',      role: 'dispatcher' } },
+  EMP003: { password: 'Pilot@1234',    user: { id: 3, name: 'Veda Narapureddy', role: 'pilot'      } },
+};
+
 export default function LoginPage() {
   const { login, isAuthenticated } = useAuth();
   const navigate = useNavigate();
@@ -34,6 +42,18 @@ export default function LoginPage() {
     setError('');
     setLoading(true);
     try {
+      if (USE_MOCK) {
+        await new Promise(r => setTimeout(r, 400));
+        const record = MOCK_USERS[employeeId.trim().toUpperCase()];
+        if (!record || record.password !== password) {
+          setError('Invalid Employee ID or password.');
+          setLoading(false);
+          return;
+        }
+        login('mock-jwt-token', record.user);
+        navigate(from, { replace: true });
+        return;
+      }
       const { data } = await api.post('/api/auth/login', {
         employeeId: employeeId.trim(),
         password,

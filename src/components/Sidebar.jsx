@@ -10,7 +10,8 @@ const NAV_ITEMS = [
   { path: '/dashboard',      label: 'Dashboard',         icon: '▦' },
   { path: '/flights',        label: 'Flights',           icon: '✈' },
   { path: '/optimization',   label: 'Route Optimizer',   icon: '⚡' },
-  { path: '/alerts',         label: 'Alerts',            icon: '🔔' },
+  { path: '/analytics',     label: 'Analytics',         icon: '📊' },
+  { path: '/alerts',        label: 'Alerts',            icon: '🔔' },
   { path: '/contact',        label: 'Contact',           icon: '✉' },
 ];
 

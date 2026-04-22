@@ -17,6 +17,7 @@ import OptimizationPage           from './pages/OptimizationPage';
 import RouteRecommendationsPage   from './pages/RouteRecommendationsPage';
 import AlertsPage                 from './pages/AlertsPage';
 import AdminPage                  from './pages/AdminPage';
+import AnalyticsPage              from './pages/AnalyticsPage';
 import ContactPage                from './pages/ContactPage';
 
 export default function App() {
@@ -50,6 +51,12 @@ export default function App() {
           <Route path="/route-recommendations" element={
             <ProtectedRoute>
               <AppShell><RouteRecommendationsPage /></AppShell>
+            </ProtectedRoute>
+          } />
+
+          <Route path="/analytics" element={
+            <ProtectedRoute>
+              <AppShell><AnalyticsPage /></AppShell>
             </ProtectedRoute>
           } />
 
