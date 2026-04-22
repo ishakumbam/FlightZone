@@ -1,175 +1,102 @@
-# FlightZone AI ✈
+# FlightZone AI — Frontend Foundation (Person 1)
 
-**CS 3354 — Software Engineering | Prototype MVP**
-
-> AI-powered flight route optimization platform for American Airlines dispatchers.
+**CS 3354 — Software Engineering | Person 1: Frontend Foundation Lead**
 
 ---
 
-## Live URLs
+## What's in this folder
 
-| Service    | URL |
-|------------|-----|
-| Frontend   | _Add Vercel URL here after deployment_ |
-| Backend API | _Add Render URL here after deployment_ |
-| GitHub Repo | https://github.com/ishakumbam/FlightZone |
+This is the complete React frontend app shell. It provides:
 
----
-
-## Tech Stack
-
-| Layer     | Technology |
-|-----------|------------|
-| Frontend  | React 18, React Router v6, Leaflet, Recharts |
-| Backend   | Node.js, Express 4, PostgreSQL |
-| Auth      | JWT (jsonwebtoken + bcrypt) |
-| DB Host   | Supabase (free tier) |
-| Email     | Resend API |
-| Deploy    | Vercel (frontend) + Render (backend) |
-| Live Data | Aviationstack API + OpenWeatherMap API |
-
----
-
-## Team
-
-| Person | Role |
-|--------|------|
-| P1 | Frontend Foundation Lead |
-| P2 | Flights Dashboard Lead |
-| P3 | Backend & AI Route Optimization Lead |
-| P4 | Alerts, Admin & QA Lead |
+| File | What it does |
+|------|--------------|
+| `src/context/AuthContext.jsx` | Global auth state — JWT token + user, `login()`, `logout()` |
+| `src/api.js` | Pre-configured axios with JWT header + 401 auto-redirect |
+| `src/components/ProtectedRoute.jsx` | Route guard — redirects to `/login` if not authenticated |
+| `src/components/Sidebar.jsx` | Collapsible sidebar nav with role-aware admin link |
+| `src/components/AppShell.jsx` | Layout wrapper: Sidebar + main content area |
+| `src/pages/LoginPage.jsx` | Full login form → `POST /api/auth/login` → stores JWT |
+| `src/pages/DashboardPage.jsx` | Overview: live stat cards, recent flights table, alerts feed |
+| `src/pages/FlightsPage.jsx` | **Stub for Person 2** — replace contents with full implementation |
+| `src/pages/OptimizationPage.jsx` | **Provided by Person 3** — copy from their branch |
+| `src/pages/RouteRecommendationsPage.jsx` | **Provided by Person 3** — copy from their branch |
+| `src/pages/AlertsPage.jsx` | **Stub for Person 4** — replace contents with full implementation |
+| `src/pages/AdminPage.jsx` | **Stub for Person 4** — replace contents with full implementation |
+| `src/pages/ContactPage.jsx` | Contact form → `POST /api/contact` |
+| `src/App.jsx` | All routes defined — add new routes here |
+| `src/index.css` | Global reset + DM Sans/DM Mono fonts + scrollbar + animations |
 
 ---
 
-## Getting Started (Person 3 — Backend)
+## Getting Started
 
 ### 1. Prerequisites
 - Node.js ≥ 18
-- A [Supabase](https://supabase.com) project (free)
+- Person 3's backend running on `http://localhost:5000`
 
-### 2. Configure Environment
+### 2. Install
 ```bash
-cd server
-cp .env.example .env
-# Fill in DATABASE_URL, JWT_SECRET, and API keys
-```
-
-### 3. Seed the Database
-```bash
-cd server
 npm install
-node database/seedHelper.js
 ```
 
-**Seeded Credentials** (share at Sync 1):
-
-| Role        | Employee ID | Password       |
-|-------------|-------------|----------------|
-| Admin       | `EMP001`    | `Admin@1234`   |
-| Dispatcher  | `EMP002`    | `Dispatch@1234`|
-| Pilot       | `EMP003`    | `Pilot@1234`   |
-
-### 4. Start the Server
+### 3. Configure environment
 ```bash
-npm run dev   # development (nodemon)
-npm start     # production
+cp .env.example .env.local
+# Set REACT_APP_API_URL if backend is not on localhost:5000
 ```
 
-### 5. Test the API
+### 4. Copy Person 3's pages
+Copy these two files from Person 3's branch into `src/pages/`:
+- `OptimizationPage.jsx`
+- `RouteRecommendationsPage.jsx`
+
+### 5. Start
 ```bash
-# Health check
-curl http://localhost:5000/api/health
-
-# Login
-curl -X POST http://localhost:5000/api/auth/login \
-  -H "Content-Type: application/json" \
-  -d '{"employeeId":"EMP001","password":"Admin@1234"}'
-
-# Get flights (with token)
-curl http://localhost:5000/api/flights \
-  -H "Authorization: Bearer YOUR_TOKEN"
+npm start   # Opens http://localhost:3000
 ```
 
----
-
-## API Reference
-
-| Method | Endpoint | Auth | Description |
-|--------|----------|------|-------------|
-| POST | `/api/auth/login` | ❌ | Login, returns JWT |
-| GET | `/api/flights` | ✅ | List flights (`?status=` `?search=` `?date=`) |
-| GET | `/api/flights/:id` | ✅ | Single flight |
-| GET | `/api/alerts` | ✅ | All alerts |
-| PATCH | `/api/alerts/:id/read` | ✅ | Mark alert as read |
-| GET | `/api/alerts/system` | ✅ | System health alerts |
-| GET | `/api/admin/users` | ✅ Admin | List all users |
-| PATCH | `/api/admin/users/:id` | ✅ Admin | Update role/status |
-| POST | `/api/admin/users` | ✅ Admin | Invite new user |
-| POST | `/api/optimize` | ✅ | Run route optimization |
-| PATCH | `/api/optimize/select` | ✅ | Save selected route |
-| GET | `/api/routes/logs` | ✅ | Optimization history |
-| POST | `/api/contact` | ❌ | Contact form |
-| GET | `/api/health` | ❌ | Health check |
+### 6. Test login
+| Role       | Employee ID | Password        |
+|------------|-------------|-----------------|
+| Admin      | `EMP001`    | `Admin@1234`    |
+| Dispatcher | `EMP002`    | `Dispatch@1234` |
+| Pilot      | `EMP003`    | `Pilot@1234`    |
 
 ---
 
-## API Keys Setup
+## For Person 2 — Flights Dashboard Lead
 
-### Aviationstack (live flight data)
-1. Go to [aviationstack.com/signup/free](https://aviationstack.com/signup/free)
-2. Create free account (500 req/month)
-3. Copy API key → `.env` `AVIATIONSTACK_KEY`
+Replace `src/pages/FlightsPage.jsx` with your implementation.
 
-### OpenWeatherMap (weather risk)
-1. Go to [openweathermap.org/api](https://openweathermap.org/api)
-2. Sign up free, go to **API Keys** tab
-3. Copy key → `.env` `OPENWEATHERMAP_KEY`
-4. ⚠️ Keys can take ~10 minutes to activate
+Available APIs (Person 3's backend):
+- `GET /api/flights` — list with `?status=`, `?search=`, `?date=`
+- `GET /api/flights/:flightId` — single flight
 
-### Resend (contact form email)
-1. Go to [resend.com/signup](https://resend.com/signup)
-2. Create free account (3,000 emails/month free)
-3. Go to **API Keys** → Create → copy key → `.env` `RESEND_API_KEY`
-
-### Supabase (PostgreSQL)
-1. Go to [supabase.com](https://supabase.com) → New Project
-2. Settings → Database → **Connection String** → URI mode
-3. Copy URI → `.env` `DATABASE_URL`
+Use the shared `api` instance from `src/api.js` — it auto-attaches the JWT.
 
 ---
 
-## Performance
+## For Person 4 — Alerts, Admin & QA Lead
 
-Route optimization engine targets **< 6 seconds** (NF5).
+Replace `src/pages/AlertsPage.jsx` and `src/pages/AdminPage.jsx` with your implementations.
+
+Available APIs (Person 3's backend):
+- `GET /api/alerts`, `PATCH /api/alerts/:id/read`, `GET /api/alerts/system`
+- `GET /api/admin/users`, `PATCH /api/admin/users/:id`, `POST /api/admin/users`
+
+The admin route (`/admin`) is already protected with `role="admin"` — only admin users can access it.
+
+---
+
+## Deployment → Vercel
 
 ```bash
-cd server
-chmod +x tests/performance_test.sh
-./tests/performance_test.sh
-```
-
-Results are logged to `server/performance_log.txt`.
-
----
-
-## Deployment
-
-### Backend → Render
-1. Connect GitHub repo on render.com
-2. New Web Service → Root directory: `server`
-3. Build command: `npm install`
-4. Start command: `npm start`
-5. Add all `.env` vars under Environment
-
-### Frontend → Vercel
-```bash
-vercel  # from React project root
-# Set REACT_APP_API_URL to your Render URL
+vercel   # from this folder
+# Set REACT_APP_API_URL to your Render backend URL
 ```
 
 ---
 
-## Requirements Satisfied (Person 3)
+## Requirements Satisfied (Person 1)
 
-FR2, FR3, FR4, FR9, FR12, FR13, FR17, NF1, NF5
-Test Cases: TC3, TC7, TC8, TC9, TC11, TC12
+FR1 (login/auth UI), FR2 (JWT integration), FR14 (contact form), NF1 (consistent design system), NF3 (responsive shell)
