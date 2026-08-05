@@ -1,102 +1,89 @@
-# FlightZone AI — Frontend Foundation (Person 1)
+# FlightZone AI
 
-**CS 3354 — Software Engineering | Person 1: Frontend Foundation Lead**
+FlightZone AI is a full-stack flight operations platform built for airline dispatchers: live flight tracking, weather-aware route optimization, and role-based admin tooling. Built as a team capstone project for CS 3354 (Software Engineering).
 
----
+## What it does
 
-## What's in this folder
+Dispatchers need to see what's happening across a route network and make fast calls when weather or congestion threatens a flight. FlightZone AI gives them:
 
-This is the complete React frontend app shell. It provides:
+- **Live dashboard** — real-time stats on active, delayed, and on-time flights, with a recent activity feed
+- **Flight map** — an interactive Leaflet map of tracked routes with live status
+- **Route optimization** — a scoring engine that weighs weather risk, airport congestion, and fuel cost to recommend the best of several route options for a flight
+- **Analytics** — on-time performance and fuel burn trends by route
+- **Alerts** — system and operational alerts with read/unread tracking
+- **Admin panel** — user management, restricted to admin roles
 
-| File | What it does |
-|------|--------------|
-| `src/context/AuthContext.jsx` | Global auth state — JWT token + user, `login()`, `logout()` |
-| `src/api.js` | Pre-configured axios with JWT header + 401 auto-redirect |
-| `src/components/ProtectedRoute.jsx` | Route guard — redirects to `/login` if not authenticated |
-| `src/components/Sidebar.jsx` | Collapsible sidebar nav with role-aware admin link |
-| `src/components/AppShell.jsx` | Layout wrapper: Sidebar + main content area |
-| `src/pages/LoginPage.jsx` | Full login form → `POST /api/auth/login` → stores JWT |
-| `src/pages/DashboardPage.jsx` | Overview: live stat cards, recent flights table, alerts feed |
-| `src/pages/FlightsPage.jsx` | **Stub for Person 2** — replace contents with full implementation |
-| `src/pages/OptimizationPage.jsx` | **Provided by Person 3** — copy from their branch |
-| `src/pages/RouteRecommendationsPage.jsx` | **Provided by Person 3** — copy from their branch |
-| `src/pages/AlertsPage.jsx` | **Stub for Person 4** — replace contents with full implementation |
-| `src/pages/AdminPage.jsx` | **Stub for Person 4** — replace contents with full implementation |
-| `src/pages/ContactPage.jsx` | Contact form → `POST /api/contact` |
-| `src/App.jsx` | All routes defined — add new routes here |
-| `src/index.css` | Global reset + DM Sans/DM Mono fonts + scrollbar + animations |
+## Architecture
 
----
+**Frontend** — React app with route-based pages, a shared Axios client that auto-attaches JWTs, and a protected-route wrapper for auth-gated pages.
 
-## Getting Started
+**Backend** — Node/Express API backed by Postgres, with:
 
-### 1. Prerequisites
-- Node.js ≥ 18
-- Person 3's backend running on `http://localhost:5000`
+- JWT authentication and role-based middleware (`admin`, `dispatcher`, `pilot`)
+- Live flight data via the Aviationstack API, polled on a cron schedule
+- Weather risk scoring via OpenWeatherMap, cached to stay within free-tier limits
+- A route optimization engine (`POST /api/optimize`) that scores candidate routes on weather risk (40%), congestion (30%), and fuel cost (30%)
 
-### 2. Install
+```
+src/
+├── pages/
+│   ├── LoginPage.jsx
+│   ├── DashboardPage.jsx
+│   ├── FlightsPage.jsx              # live map view
+│   ├── AnalyticsPage.jsx            # on-time / fuel charts
+│   ├── OptimizationPage.jsx         # route optimization
+│   ├── RouteRecommendationsPage.jsx
+│   ├── AlertsPage.jsx
+│   ├── AdminPage.jsx
+│   └── ContactPage.jsx
+├── context/AuthContext.jsx
+├── components/{AppShell,Sidebar,ProtectedRoute}.jsx
+└── api.js
+
+server/
+├── routes/{auth,flights,optimize,alerts,admin,contact}.js
+├── services/{aviationService,weatherService}.js
+├── middleware/authMiddleware.js
+└── database/{schema.sql,seed.sql}
+```
+
+## Tech stack
+
+| Layer | Technology |
+|---|---|
+| Frontend | React, React Router, Axios, Leaflet, Recharts |
+| Backend | Node.js, Express, PostgreSQL |
+| Auth | JWT, bcrypt |
+| External APIs | Aviationstack (flight data), OpenWeatherMap (weather risk) |
+| Deployment | Vercel (frontend), Render (backend) |
+
+## Running locally
+
+**Backend**
+
+```bash
+cd server
+npm install
+cp .env.example .env      # set DATABASE_URL and API keys
+npm run seed               # create schema and seed data
+npm run dev                 # http://localhost:5000
+```
+
+**Frontend**
+
 ```bash
 npm install
+npm start                   # http://localhost:3000
 ```
 
-### 3. Configure environment
-```bash
-cp .env.example .env.local
-# Set REACT_APP_API_URL if backend is not on localhost:5000
-```
+### Test accounts
 
-### 4. Copy Person 3's pages
-Copy these two files from Person 3's branch into `src/pages/`:
-- `OptimizationPage.jsx`
-- `RouteRecommendationsPage.jsx`
+| Role | Employee ID | Password |
+|---|---|---|
+| Admin | `EMP001` | `Admin@1234` |
+| Dispatcher | `EMP002` | `Dispatch@1234` |
+| Pilot | `EMP003` | `Pilot@1234` |
 
-### 5. Start
-```bash
-npm start   # Opens http://localhost:3000
-```
+## Team
 
-### 6. Test login
-| Role       | Employee ID | Password        |
-|------------|-------------|-----------------|
-| Admin      | `EMP001`    | `Admin@1234`    |
-| Dispatcher | `EMP002`    | `Dispatch@1234` |
-| Pilot      | `EMP003`    | `Pilot@1234`    |
-
----
-
-## For Person 2 — Flights Dashboard Lead
-
-Replace `src/pages/FlightsPage.jsx` with your implementation.
-
-Available APIs (Person 3's backend):
-- `GET /api/flights` — list with `?status=`, `?search=`, `?date=`
-- `GET /api/flights/:flightId` — single flight
-
-Use the shared `api` instance from `src/api.js` — it auto-attaches the JWT.
-
----
-
-## For Person 4 — Alerts, Admin & QA Lead
-
-Replace `src/pages/AlertsPage.jsx` and `src/pages/AdminPage.jsx` with your implementations.
-
-Available APIs (Person 3's backend):
-- `GET /api/alerts`, `PATCH /api/alerts/:id/read`, `GET /api/alerts/system`
-- `GET /api/admin/users`, `PATCH /api/admin/users/:id`, `POST /api/admin/users`
-
-The admin route (`/admin`) is already protected with `role="admin"` — only admin users can access it.
-
----
-
-## Deployment → Vercel
-
-```bash
-vercel   # from this folder
-# Set REACT_APP_API_URL to your Render backend URL
-```
-
----
-
-## Requirements Satisfied (Person 1)
-
-FR1 (login/auth UI), FR2 (JWT integration), FR14 (contact form), NF1 (consistent design system), NF3 (responsive shell)
+Built by a four-person team covering frontend foundation/auth, the flights dashboard, the backend and optimization engine, and alerts/admin/QA.
