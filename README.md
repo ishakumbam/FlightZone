@@ -2,6 +2,8 @@
 
 FlightZone AI is a full-stack flight operations platform built for airline dispatchers: live flight tracking, weather-aware route optimization, and role-based admin tooling. Built as a team capstone project for CS 3354 (Software Engineering).
 
+**Live demo:** [flight-zone-sepia.vercel.app](https://flight-zone-sepia.vercel.app/) — frontend only. Sign-in and data require the backend running locally (see below).
+
 ## What it does
 
 Dispatchers need to see what's happening across a route network and make fast calls when weather or congestion threatens a flight. FlightZone AI gives them:
@@ -55,7 +57,7 @@ server/
 | Backend | Node.js, Express, PostgreSQL |
 | Auth | JWT, bcrypt |
 | External APIs | Aviationstack (flight data), OpenWeatherMap (weather risk) |
-| Deployment | Vercel (frontend), Render (backend) |
+| Deployment | Vercel (frontend) |
 
 ## Running locally
 
